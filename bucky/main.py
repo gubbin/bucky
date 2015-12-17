@@ -274,7 +274,7 @@ class Bucky(object):
         else:
             carbon_client = carbon.PlaintextClient
 
-        tcollector_client = tcollector.PlaintextClient
+        tcollector_client = tcollector.Client
         self.clients = []
         #for client in cfg.custom_clients + [carbon_client]:
         for client in cfg.custom_clients + [tcollector_client]:

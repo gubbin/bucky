@@ -25,16 +25,14 @@ import bucky.names as names
 log = logging.getLogger(__name__)
 
 
-class CarbonClient(client.Client):
+class Client(client.Client):
     def __init__(self, cfg, pipe):
-        super(CarbonClient, self).__init__(pipe)
+        super(Client, self).__init__(pipe)
         self.debug = cfg.debug
 
     def close(self):
         pass
 
-
-class PlaintextClient(CarbonClient):
     def send(self, host, name, value, mtime):
         stat = names.statname(host, name)
         mesg = "%s %s %s" % (stat, mtime, value)
