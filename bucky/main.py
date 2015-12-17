@@ -122,6 +122,11 @@ def options():
             help="Port of the Graphite/Carbon server [%default]"
         ),
         op.make_option(
+            "--disable-graphite", dest="graphite_enabled",
+            default=cfg.graphite_enabled, action="store_false",
+            help="Disable Graphite/Carbon output"
+        ),
+        op.make_option(
             "--full-trace", dest="full_trace",
             default=cfg.full_trace, action="store_true",
             help="Display full error if config file fails to load"
@@ -145,6 +150,11 @@ def options():
             "--gid", dest="gid",
             type="str", default=cfg.gid,
             help="Drop privileges to this group"
+        ),
+        op.make_option(
+            "--enable-tcollector", dest="tcollector_enabled",
+            default=cfg.tcollector_enabled, action="store_true",
+            help="Enable TCollector-format output to console"
         ),
         op.make_option(
             "--custom-clients", dest="custom_clients",
@@ -269,15 +279,17 @@ class Bucky(object):
             self.proc = None
             self.psampleq = self.sampleq
 
-        if cfg.graphite_pickle_enabled:
-            carbon_client = carbon.PickleClient
-        else:
-            carbon_client = carbon.PlaintextClient
+        ctypes = []
+        if cfg.graphite_enabled:
+            if cfg.graphite_pickle_enabled:
+                ctypes.append(carbon.PickleClient)
+            else:
+                ctypes.append(carbon.PlaintextClient)
+        if cfg.tcollector_enabled:
+            ctypes.append(tcollector.Client)
 
-        tcollector_client = tcollector.Client
         self.clients = []
-        #for client in cfg.custom_clients + [carbon_client]:
-        for client in cfg.custom_clients + [tcollector_client]:
+        for client in cfg.custom_clients + ctypes:
             send, recv = multiprocessing.Pipe()
             instance = client(cfg, recv)
             self.clients.append((instance, send))

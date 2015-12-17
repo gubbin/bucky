@@ -56,12 +56,15 @@ statsd_onlychanged_gauges = True
 
 graphite_ip = "127.0.0.1"
 graphite_port = 2003
+graphite_enabled = True
 graphite_max_reconnects = 60
 graphite_reconnect_delay = 1
 graphite_backoff_factor = 1.5
 graphite_backoff_max = 60
 graphite_pickle_enabled = False
 graphite_pickle_buffer_size = 500
+
+tcollector_enabled = False
 
 full_trace = False
 
