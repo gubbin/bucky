@@ -37,6 +37,7 @@ import bucky.collectd as collectd
 import bucky.metricsd as metricsd
 import bucky.statsd as statsd
 import bucky.processor as processor
+import bucky.tcollector as tcollector
 from bucky.errors import BuckyError
 
 
@@ -144,6 +145,11 @@ def options():
             "--gid", dest="gid",
             type="str", default=cfg.gid,
             help="Drop privileges to this group"
+        ),
+        op.make_option(
+            "--custom-clients", dest="custom_clients",
+            type="str", default=cfg.custom_clients,
+            help="Custom backends in addition to carbon"
         ),
     ]
 
@@ -268,8 +274,10 @@ class Bucky(object):
         else:
             carbon_client = carbon.PlaintextClient
 
+        tcollector_client = tcollector.PlaintextClient
         self.clients = []
-        for client in cfg.custom_clients + [carbon_client]:
+        #for client in cfg.custom_clients + [carbon_client]:
+        for client in cfg.custom_clients + [tcollector_client]:
             send, recv = multiprocessing.Pipe()
             instance = client(cfg, recv)
             self.clients.append((instance, send))
