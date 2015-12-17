@@ -37,6 +37,6 @@ class CarbonClient(client.Client):
 class PlaintextClient(CarbonClient):
     def send(self, host, name, value, mtime):
         stat = names.statname(host, name)
-        mesg = "%s %s %s\n" % (stat, value, mtime)
-        print "mesg:", mesg,
+        mesg = "%s %s %s" % (stat, mtime, value)
+        print mesg
 
