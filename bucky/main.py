@@ -172,11 +172,6 @@ def options():
             default=cfg.opentsdb_enabled, action="store_true",
             help="Enable OpenTSDB output"
         ),
-        op.make_option(
-            "--custom-clients", dest="custom_clients",
-            type="str", default=cfg.custom_clients,
-            help="Custom backends in addition to carbon"
-        ),
     ]
 
 
