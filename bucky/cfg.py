@@ -66,6 +66,14 @@ graphite_pickle_buffer_size = 500
 
 tcollector_enabled = False
 
+opentsdb_ip = "127.0.0.1"
+opentsdb_port = 4242
+opentsdb_enabled = False
+opentsdb_max_reconnects = 60
+opentsdb_reconnect_delay = 1
+opentsdb_backoff_factor = 1.5
+opentsdb_backoff_max = 60
+
 full_trace = False
 
 name_prefix = None

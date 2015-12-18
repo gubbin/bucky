@@ -38,6 +38,7 @@ import bucky.metricsd as metricsd
 import bucky.statsd as statsd
 import bucky.processor as processor
 import bucky.tcollector as tcollector
+import bucky.opentsdb as opentsdb
 from bucky.errors import BuckyError
 
 
@@ -155,6 +156,21 @@ def options():
             "--enable-tcollector", dest="tcollector_enabled",
             default=cfg.tcollector_enabled, action="store_true",
             help="Enable TCollector-format output to console"
+        ),
+        op.make_option(
+            "--opentsdb-ip", dest="opentsdb_ip", metavar="IP",
+            default=cfg.opentsdb_ip,
+            help="IP address of the OpenTSDB server [%default]"
+        ),
+        op.make_option(
+            "--opentsdb-port", dest="opentsdb_port", metavar="INT",
+            type="int", default=cfg.opentsdb_port,
+            help="Port of the OpenTSDB server [%default]"
+        ),
+        op.make_option(
+            "--enable-opentsdb", dest="opentsdb_enabled",
+            default=cfg.opentsdb_enabled, action="store_true",
+            help="Enable OpenTSDB output"
         ),
         op.make_option(
             "--custom-clients", dest="custom_clients",
@@ -287,6 +303,8 @@ class Bucky(object):
                 ctypes.append(carbon.PlaintextClient)
         if cfg.tcollector_enabled:
             ctypes.append(tcollector.Client)
+        if cfg.opentsdb_enabled:
+            ctypes.append(opentsdb.Client)
 
         self.clients = []
         for client in cfg.custom_clients + ctypes:
