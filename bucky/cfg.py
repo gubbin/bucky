@@ -73,6 +73,7 @@ opentsdb_max_reconnects = 60
 opentsdb_reconnect_delay = 1
 opentsdb_backoff_factor = 1.5
 opentsdb_backoff_max = 60
+opentsdb_tags = ["source=bucky"]    # OpenTSDB requires at least one tag
 
 full_trace = False
 

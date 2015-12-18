@@ -47,6 +47,7 @@ class Client(client.Client):
         self.reconnect_delay = cfg.opentsdb_reconnect_delay
         self.backoff_factor = cfg.opentsdb_backoff_factor
         self.backoff_max = cfg.opentsdb_backoff_max
+        self.tags = ' '.join(cfg.opentsdb_tags)
         if self.max_reconnects <= 0:
             self.max_reconnects = sys.maxint
         self.connect()
@@ -87,7 +88,7 @@ class Client(client.Client):
 
     def send(self, host, name, value, mtime):
         stat = names.statname(host, name)
-        mesg = "%s %s %s\n" % (stat, value, mtime)
+        mesg = "put %s %s %s %s\n" % (stat, mtime, value, self.tags)
         for i in xrange(self.max_reconnects):
             try:
                 self.sock.sendall(mesg)
