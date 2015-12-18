@@ -34,7 +34,11 @@ class Client(client.Client):
         pass
 
     def send(self, host, name, value, mtime):
-        stat = names.statname(host, name)
-        mesg = "%s %s %s" % (stat, mtime, value)
+        if cfg.tcollector_host_tag and host:
+            stat = names.statname(None, name)
+            mesg = "%s %s %s %s=%s" % (stat, mtime, value, cfg.tcollector_host_tag, host)
+        else:
+            stat = names.statname(host, name)
+            mesg = "%s %s %s" % (stat, mtime, value)
         print mesg
 

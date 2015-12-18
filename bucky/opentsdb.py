@@ -87,8 +87,13 @@ class Client(client.Client):
             pass
 
     def send(self, host, name, value, mtime):
-        stat = names.statname(host, name)
-        mesg = "put %s %s %s %s\n" % (stat, mtime, value, self.tags)
+        if cfg.opentsdb_host_tag and host:
+            stat = names.statname(None, name)
+            tags = '%s=%s %s' % (cfg.opentsdb_host_tag, host, self.tags)
+        else:
+            stat = names.statname(host, name)
+            tags = self.tags
+        mesg = "put %s %s %s %s\n" % (stat, mtime, value, tags)
         for i in xrange(self.max_reconnects):
             try:
                 self.sock.sendall(mesg)

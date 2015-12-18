@@ -65,6 +65,7 @@ graphite_pickle_enabled = False
 graphite_pickle_buffer_size = 500
 
 tcollector_enabled = False
+tcollector_host_tag = "rhost"   # tcollector already provides "host" tag
 
 opentsdb_ip = "127.0.0.1"
 opentsdb_port = 4242
@@ -74,6 +75,8 @@ opentsdb_reconnect_delay = 1
 opentsdb_backoff_factor = 1.5
 opentsdb_backoff_max = 60
 opentsdb_tags = ["source=bucky"]    # OpenTSDB requires at least one tag
+# if host is supplied by e.g. collectd, use a tag instead of the metric name
+opentsdb_host_tag = "host"
 
 full_trace = False
 
