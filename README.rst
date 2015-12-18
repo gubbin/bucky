@@ -1,7 +1,7 @@
 Bucky
 -----
 
-:info: Bucky Statsd and Collectd server for Graphite
+:info: Bucky Statsd and Collectd server for Graphite and OpenTSDB
 
 .. image:: https://travis-ci.org/trbs/bucky.png?branch=master
    :target: https://travis-ci.org/trbs/bucky
@@ -10,8 +10,8 @@ Bucky
    :target: https://coveralls.io/r/trbs/bucky?branch=master
 
 Bucky is a small server for collecting and translating metrics for
-Graphite. It can current collect metric data from CollectD daemons
-and from StatsD clients.
+Graphite and other time-series databases. It can currently collect metric
+data from CollectD daemons and from StatsD clients.
 
 Installation
 ------------
@@ -112,6 +112,11 @@ output::
       --disable-statsd      Disable the StatsD server
       --graphite-ip=IP      IP address of the Graphite/Carbon server [127.0.0.1]
       --graphite-port=INT   Port of the Graphite/Carbon server [2003]
+      --disable-graphite    Disable the Graphite/Carbon backend
+      --enable-opentsdb     Enable the OpenTSDB backend
+      --opentsdb-ip=IP      IP address of the OpenTSDB server [127.0.0.1]
+      --opentsdb-port=INT   Port of the OpenTSDB server [4242]
+      --enable-tcollector   Enable the TCollector backend (writes to STDOUT)
       --full-trace          Display full error if config file fails to load
       --log-level=NAME      Logging output verbosity [INFO]
       --version             show program's version number and exit
@@ -212,6 +217,7 @@ config file::
     statsd_prefix_gauge = "gauges"
 
     # Basic Graphite configuration
+    graphite_enabled = True
     graphite_ip = "127.0.0.1"
     graphite_port = 2003
     
@@ -233,6 +239,28 @@ config file::
     # on your Graphite cache/relay.
     graphite_pickle_enabled = False
     graphite_pickle_buffer_size = 500
+
+    # TCollector output is disabled by default.
+    # NB: Bucky's logging output could interfere with TCollector.
+    tcollector_enabled = False
+    # If the metrics collector gathers the client hostname (statsd does not),
+    # put it in a tag instead of in the metric name per OpenTSDB practice.
+    tcollector_host_tag = "rhost"   # tcollector already provides "host" tag
+
+    # OpenTSDB output is disabled by default
+    opentsdb_enabled = False
+    opentsdb_ip = "127.0.0.1"
+    opentsdb_port = 4242
+
+    # These work identically to the above Graphite options
+    opentsdb_max_reconnects = 60
+    opentsdb_reconnect_delay = 1
+    opentsdb_backoff_factor = 1.5
+    opentsdb_backoff_max = 60
+
+    # Tagging metrics is an important principle in OpenTSDB
+    opentsdb_tags = ["source=bucky"]    # OpenTSDB requires at least one tag
+    opentsdb_host_tag = "host"  # see tcollector_host_tag
 
     # Bucky provides these settings to allow the system wide
     # configuration of how metric names are processed before
