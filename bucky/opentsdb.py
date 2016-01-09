@@ -48,6 +48,7 @@ class Client(client.Client):
         self.backoff_factor = cfg.opentsdb_backoff_factor
         self.backoff_max = cfg.opentsdb_backoff_max
         self.tags = ' '.join(cfg.opentsdb_tags)
+        self.collector_host_tag = cfg.collector_host_tag
         if self.max_reconnects <= 0:
             self.max_reconnects = sys.maxint
         self.connect()
@@ -87,9 +88,9 @@ class Client(client.Client):
             pass
 
     def send(self, host, name, value, mtime):
-        if cfg.opentsdb_host_tag and host:
+        if self.collector_host_tag and host:
             stat = names.statname(None, name)
-            tags = '%s=%s %s' % (cfg.opentsdb_host_tag, host, self.tags)
+            tags = '%s=%s %s' % (self.opentsdb_host_tag, host, self.tags)
         else:
             stat = names.statname(host, name)
             tags = self.tags

@@ -29,12 +29,13 @@ class Client(client.Client):
     def __init__(self, cfg, pipe):
         super(Client, self).__init__(pipe)
         self.debug = cfg.debug
+        self.collector_host_tag = cfg.collector_host_tag
 
     def close(self):
         pass
 
     def send(self, host, name, value, mtime):
-        if cfg.tcollector_host_tag and host:
+        if self.tcollector_host_tag and host:
             stat = names.statname(None, name)
             mesg = "%s %s %s %s=%s" % (stat, mtime, value, cfg.tcollector_host_tag, host)
         else:
