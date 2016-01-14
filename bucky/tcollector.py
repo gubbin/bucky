@@ -29,7 +29,7 @@ class Client(client.Client):
     def __init__(self, cfg, pipe):
         super(Client, self).__init__(pipe)
         self.debug = cfg.debug
-        self.collector_host_tag = cfg.collector_host_tag
+        self.tcollector_host_tag = cfg.tcollector_host_tag
 
     def close(self):
         pass
