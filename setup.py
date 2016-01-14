@@ -24,7 +24,7 @@ setup(
     name='bucky',
     version=__version__,
 
-    description='StatsD and CollectD adapter for Graphite',
+    description='StatsD and CollectD adapter for Graphite and OpenTSDB',
     long_description=open(
         os.path.join(
             os.path.dirname(__file__),
@@ -33,10 +33,10 @@ setup(
     ).read(),
     author='Paul J. Davis',
     author_email='paul@cloudant.com',
-    maintainer='Trbs',
-    maintainer_email='trbs@trbs.net',
+    maintainer='Aaron Burt',
+    maintainer_email='aaron.burt@upsight.com',
     license='ASF2.0',
-    url='http://github.com/trbs/bucky.git',
+    url='http://github.com/gubbin/bucky.git',
     install_requires=install_requires,
 
     classifiers=[
